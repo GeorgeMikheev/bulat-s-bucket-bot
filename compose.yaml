@@ -14,7 +14,6 @@ services:
     command: nginx -g "daemon off;"
     depends_on:
       - app
-      - api
     image: nginx:alpine
     restart: on-failure
     volumes:
@@ -33,7 +32,6 @@ services:
       - static:/app/static
     depends_on:
       - db
-      - redis
     restart: on-failure
     env_file:
       - .env
@@ -45,7 +43,6 @@ services:
     command: bash -c "printenv > /etc/environment; crontab crontab; cron && tail -f /var/log/cron.log"
     depends_on:
       - db
-      - redis
     volumes:
       - ./src/:/app/
     restart: on-failure
