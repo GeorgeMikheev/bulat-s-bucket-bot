@@ -26,7 +26,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python3 manage.py collectstatic --no-input; python3 manage.py migrate; uvicorn core.asgi:application --port 8000 --host 0.0.0.0'
     volumes:
       - ./src/:/app/
@@ -37,6 +37,21 @@ services:
     restart: on-failure
     env_file:
       - .env
+
+  cron:
+    build:
+      context: .
+      dockerfile: docker/DockerfileCron
+    command: bash -c "printenv > /etc/environment; crontab crontab; cron && tail -f /var/log/cron.log"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./src/:/app/
+    restart: on-failure
+    env_file:
+      - .env
+
 
 volumes:
   postgresql-data:
