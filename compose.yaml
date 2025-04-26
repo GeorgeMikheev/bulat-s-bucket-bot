@@ -19,6 +19,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - static:/var/www/app/static
+      - media:/var/www/app/media
     ports:
       - "8000:8000"
 
@@ -30,6 +31,7 @@ services:
     volumes:
       - ./src/:/app/
       - static:/app/static
+      - media:/app/media
     depends_on:
       - db
     restart: on-failure
@@ -53,3 +55,4 @@ services:
 volumes:
   postgresql-data:
   static:
+  media:
