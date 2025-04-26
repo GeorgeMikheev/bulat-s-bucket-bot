@@ -1,1 +1,4 @@
+static
 .env
+venv
+.idea
